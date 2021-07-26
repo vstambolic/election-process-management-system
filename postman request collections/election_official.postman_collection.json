@@ -1,0 +1,47 @@
+{
+	"info": {
+		"_postman_id": "f9f56243-9739-40a3-add1-85ee733bc11b",
+		"name": "election_official",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "VOTE",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "xxx",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "votes.csv"
+						}
+					]
+				},
+				"url": {
+					"raw": "localhost:5003/vote",
+					"host": [
+						"localhost"
+					],
+					"port": "5003",
+					"path": [
+						"vote"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

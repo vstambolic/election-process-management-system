@@ -1,0 +1,179 @@
+{
+	"info": {
+		"_postman_id": "409f3d30-dc3c-4d5f-a655-0a3126487538",
+		"name": "admin",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "CREATE PARTICIPANT",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "xxx",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Participant A\",\r\n    \"individual\": true\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "localhost:5002/create_participant",
+					"host": [
+						"localhost"
+					],
+					"port": "5002",
+					"path": [
+						"create_participant"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CREATE ELECTION",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "xx",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "localhost:5002/createElection",
+					"host": [
+						"localhost"
+					],
+					"port": "5002",
+					"path": [
+						"createElection"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET ELECTIONS",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "xxx",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5002/getElections",
+					"host": [
+						"localhost"
+					],
+					"port": "5002",
+					"path": [
+						"getElections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET RESULTS",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "xxx",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5002/getElections",
+					"host": [
+						"localhost"
+					],
+					"port": "5002",
+					"path": [
+						"getElections"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "INDEX",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5002/",
+					"host": [
+						"localhost"
+					],
+					"port": "5002",
+					"path": [
+						""
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GET PARTICIPANTS",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "xxx",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "localhost:5002/getParticipants",
+					"host": [
+						"localhost"
+					],
+					"port": "5002",
+					"path": [
+						"getParticipants"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

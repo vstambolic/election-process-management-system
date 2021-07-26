@@ -1,0 +1,64 @@
+version: '3'
+
+# Build configuration environment variable (on local only): COMPOSE_PROJECT_NAME=ac_services
+services:
+  access_control_db:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+#    healthcheck:
+#      test: ["CMD", "mysqladmin", "ping","-h", "localhost"] 
+#      timeout: 10s
+#      retries: 10 
+    volumes:
+      - mysql-ac-data:/var/lib/mysql # Named volume
+    networks:
+      - ac_network
+  phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - '8080:80'
+    environment:
+      PMA_HOST: access_control_db
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - ac_network
+#    depends_on:
+#      access_control_db:
+#        condition: service_healthy
+  ac_db_migration:
+    image: ac_db_migration
+    environment:
+      - DB_URI=access_control_db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=access_control
+    networks:
+      - ac_network
+#    depends_on:
+#      access_control_db:
+#        condition: service_healthy
+  access_control:
+    image: ac
+    environment:
+      - DB_URI=access_control_db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=access_control
+    ports:
+      - 5001:5001
+#    depends_on:
+#      access_control_db:
+#        condition: service_healthy
+#    volumes:
+#      - ./access_control/:/opt/src/access_control
+#      - ./utils/:/opt/src/access_control/utils
+    networks:
+      - ac_network
+volumes:
+  mysql-ac-data:
+
+networks:
+  ac_network:
+    driver: overlay

@@ -1,0 +1,107 @@
+version: '3'
+
+# Build configuration environment variable (on local only): COMPOSE_PROJECT_NAME=epm_services
+services:
+  epm_db:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+#    healthcheck:
+#      test: ["CMD", "mysqladmin", "ping","-h", "localhost"]
+#      timeout: 10s
+#      retries: 10 
+    volumes:
+      - mysql-epm-data:/var/lib/mysql # Named volume
+    networks:
+      - admin_db_network
+      - epm_db_network
+  epm_phpmyadmin:
+    image: phpmyadmin
+    restart: always
+    ports:
+      - '8081:80'
+    environment:
+      PMA_HOST: epm_db
+      MYSQL_ROOT_PASSWORD: root
+    networks:
+      - epm_db_network
+#    depends_on:
+#      epm_db:
+#        condition: service_healthy
+  epm_admin:
+    image: epm_admin
+    environment:
+      - DB_URI=epm_db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=election_process
+#    depends_on:
+#      epm_db:
+#        condition: service_healthy
+    ports:
+      - 5002:5002
+    networks:
+      - admin_db_network
+#    volumes:
+#      - ./election_process_management/admin/:/opt/src/epm_admin
+#      - ./utils/:/opt/src/epm_admin/utils
+  redis:
+    image: redis
+    ports:
+      - 6379:6379
+#    volumes:
+#      - redis-epm-data:/data # Named volume
+    networks:
+      - eo_redis_network
+      - daemon_redis_network
+  epm_election_official:
+    image: epm_election_official
+    environment:
+      - REDIS_URI=redis
+    ports:
+      - 5003:5003
+#    volumes:
+#      - ./election_process_management/election_official/:/opt/src/epm_eo
+#      - ./utils/:/opt/src/epm_eo/utils
+    networks:
+      - eo_redis_network
+    deploy:
+      replicas: 3
+  epm_daemon:
+    image: epm_daemon
+    environment:
+      - REDIS_URI=redis
+      - DB_URI=epm_db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=election_process
+    networks:
+      - daemon_redis_network
+      - epm_db_network
+#    volumes:
+#      - ./election_process_management/daemon/:/opt/src/epm_daemon
+#      - ./utils/:/opt/src/epm_daemon/utils
+  epm_db_migration:
+    image: epm_db_migration
+    environment:
+      - DB_URI=epm_db
+      - DB_USER=root
+      - DB_PASSWORD=root
+      - DB_NAME=election_process
+    networks:
+      - epm_db_network
+#    depends_on:
+#      epm_db:
+#        condition: service_healthy
+volumes:
+  mysql-epm-data:
+networks:
+  admin_db_network:
+    driver: overlay
+  epm_db_network:
+    driver: overlay
+  daemon_redis_network:
+    driver: overlay
+  eo_redis_network:
+    driver: overlay
+
